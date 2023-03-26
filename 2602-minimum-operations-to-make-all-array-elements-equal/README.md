@@ -1,0 +1,1 @@
+<h2><a href="https://leetcode.com/contest/weekly-contest-338/problems/minimum-operations-to-make-all-array-elements-equal/">2602. Minimum Operations to Make All Array Elements Equal</a></h2><h3>Medium</h3><hr>Level up your coding skills and quickly land a job. This is the best place to expand your knowledge and get prepared for your next interview.
