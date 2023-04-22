@@ -1,0 +1,1 @@
+<h2><a href="https://leetcode.com/contest/weekly-contest-305/problems/check-if-there-is-a-valid-partition-for-the-array/">2369. Check if There is a Valid Partition For The Array</a></h2><h3>Medium</h3><hr>Level up your coding skills and quickly land a job. This is the best place to expand your knowledge and get prepared for your next interview.
