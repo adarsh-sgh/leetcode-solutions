@@ -1,23 +1,16 @@
 class Solution {
 public:
-
+    long long ceil(long long a, int b){
+        if(a==0) return 0;
+        return 1 + (a-1)/b;
+    }
     vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
-        vector<int>ans(spells.size());
         sort(potions.begin(),potions.end());
+        vector<int>ans(spells.size());
         for(int i = 0;i<spells.size();i++){
-            long long s = spells[i];
-            int pn = potions.size();
-            int l = 0, r = pn - 1;
-            while(l<r){
-                int mid = (l + r) / 2;
-                if(s * potions[mid] >= success){
-                    r = mid;
-                }else{
-                    l = mid + 1;
-                }
-            }
-            if(s * potions[l] < success)continue;
-            ans[i] = potions.size() - l;
+            long long minp = ceil(success,spells[i]);
+            auto cnt = potions.end()-lower_bound(potions.begin(),potions.end(),minp);
+            ans[i] = cnt;
         }
         return ans;
     }
