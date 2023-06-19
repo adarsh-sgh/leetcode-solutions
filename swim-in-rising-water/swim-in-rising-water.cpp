@@ -21,12 +21,24 @@ bool possible(int time) {
   }
   return false;
 }
+
 int swimInWater(vector<vector<int>>& grid) {
   g = grid;
   n = g.size();
-  for (int t = 0;t < n * n;t++) {
-    if (possible(t)) return t;
+  int l = 0, r = n * n;
+  while (l < r) {
+    int mid = (l + r) / 2;
+    if (possible(mid)) {
+      r = mid;
+    }
+    else {
+      l = mid + 1;
+    }
   }
-  return n*n;
+  return l;
+  // for (int t = 0;t < n * n;t++) {
+  //   if (possible(t)) return t;
+  // }
+  // return n*n;
 }
 };
