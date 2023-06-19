@@ -10,7 +10,7 @@ bool oob(vector<int> v) {
 vector<vector<int>>g;
 int cp(int row, int c1, int c2) {
   // dbg(row, c1, c2)
-    if (oob({ row,c1,c2 })) return 0;
+    if (oob({ row,c1,c2 })|| c1 > c2) return 0;
   if (dp[row][c1][c2] != -1) return dp[row][c1][c2];
   int res = 0;
   for (int d = -1;d <= 1;d++) {
