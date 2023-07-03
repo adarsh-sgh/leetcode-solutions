@@ -19,7 +19,7 @@ public:
     void second(function<void()> printSecond) {
         unique_lock<mutex> lck(m);
         // printSecond() outputs "second". Do not change or remove this line.
-        while(turn != 2)cv.wait(lck);
+        if(turn != 2)cv.wait(lck);
         printSecond();
         turn++;
         cv.notify_all();
