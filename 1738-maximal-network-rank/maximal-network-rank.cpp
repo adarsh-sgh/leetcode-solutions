@@ -1,19 +1,52 @@
 class Solution {
 public:
     int maximalNetworkRank(int n, vector<vector<int>>& roads) {
-     vector<set<int>>adj(n);
-     for(auto &&r:roads){
-         adj[r[0]].insert(r[1]);
-         adj[r[1]].insert(r[0]);
-     }   
-     int ans = 0;
-     for(int i = 0;i<n;i++){
-         for(int j = i+1;j<n;j++){
-             int curr = adj[i].size() + adj[j].size() - adj[i].count(j);
-             ans = max(ans,curr);
-         }
-     }
-     return ans;
+        vector<int>adj[n+1];
 
+        for(auto it:roads){
+            // cout<<it<<"=> ";
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+        cout<<"\n";
+        int cnt=0;
+        int mx = INT_MIN;
+        int f1=0, f2=0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                int f = i;
+                int s = j;
+                if(f==s){
+                    continue;
+                }
+                cout<<f<<","<<s<<"->";
+                for(auto i: adj[f]){
+                    // cout<<i<<"  ";
+                    if(i!=s){
+                        cnt++;
+                    }
+                }
+                for(auto i: adj[s]){
+                    if(i!=f){
+                        cnt++;
+                    }
+                }
+                for(auto i:adj[f]){
+                    if(i==s){
+                        cnt++;
+                        break;
+                    }
+                }
+                cout<<cnt<<endl;
+                if(cnt>mx){
+                    f1 = i;
+                    f2 = j;
+                    mx = max(mx, cnt);
+                }
+                cnt=0;
+            }
+        }
+       
+        return mx;
     }
 };
