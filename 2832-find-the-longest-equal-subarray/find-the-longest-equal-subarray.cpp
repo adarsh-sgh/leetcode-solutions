@@ -2,7 +2,7 @@ class Solution {
 public:
 #define dbg(...) 42;
     int longestEqualSubarray(vector<int>& nums, int k) {
-  map<int, deque<int>>mp;
+  unordered_map<int, deque<int>>mp;
   int ans = 0;
   for (int i = 0;i < nums.size();i++) {
     auto&& dq = mp[nums[i]];
