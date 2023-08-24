@@ -1,33 +1,22 @@
 class Solution {
 public:
-#define dbg(...) 42;
-    vector<array<int, 2>>tm;
-int n;
-int ans = -1;
-vector<int>ed;
-void dfs(int x, int t) {
-  dbg(x, t, tm);
-  if(x==-1) return;
-  if (tm[x][0] != -1) {
-    if (tm[x][1] != -1) return;
-    int clen = t - tm[x][0];
-    dbg(clen);
-    ans = max(ans, clen);
-    return;
+// copied 
+int longestCycle(vector<int>& e) {
+  int res = -1;
+  vector<array<int, 2>> dp(e.size(), { -1, -1 });
+  for (int i = 0; i < e.size(); ++i) {
+    int distance = 0;
+    for (int j = i; j != -1; j = e[j]) {
+      auto [distance_i, from_i] = dp[j];
+      if (distance_i != -1) {
+        if (from_i == i)
+          res = max(res, distance - distance_i);
+        break;
+      }
+      dp[j] = { distance++, i };
+    }
   }
-  tm[x][0] = t;
-  dfs(ed[x], t + 1);
-  tm[x][1] = 1;
-}
-
-int longestCycle(vector<int>& edges) {
-  n = edges.size();
-  ed = edges;
-  tm = vector<array<int, 2>>(n, { -1,-1 });
-  for (int i = 0;i < n;i++) {
-    dfs(i, 0);
-  }
-  return ans;
+  return res;
 }
 
 };
