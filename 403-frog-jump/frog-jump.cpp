@@ -24,6 +24,19 @@ bool canCross(vector<int>& stones) {
   n = stones.size();
   v = stones;
   dp.resize(stones.size());
-  return cc(0, 0);
+  if(stones[1] != 1)return false;
+  dp[1][1] = true;
+  for(int i = 1;i<stones.size();i++){
+    for(auto &&[j,b]:dp[i]){
+      for(int o = -1;o<=1;o++){
+        int target = stones[i] + j + o;
+        auto lb = lower_bound(stones.begin() + i, stones.end(),target);
+        if(lb == stones.end()||*lb != target)continue;
+        dp[lb - stones.begin()][j + o] = true;
+      }
+    }
+  }
+  return dp[n-1].size();
+  // return cc(0, 0);
 }
 };
