@@ -1,15 +1,18 @@
 class Solution {
 public:
+
+// can be optimised to n^4, perhaps some other day
     vector<vector<int>>g;
 bool oob(int i, int j) {
   return i < 0 || j < 0 || i >= g.size() || j >= g.size() || g[i][j] == -1;
 }
 int inf = 1e9;
-int dp[51][51][51][51];
+int dp[51][51][51];
 int cp(int i1, int j1, int i2, int j2) {
   if (i1 == g.size() - 1 && j1 == g[0].size() - 1 && i1 == i2 && j1 == j2) return g[i1][j1];
   if (oob(i1, j1) || oob(i2, j2))return -inf;
-  int& ans = dp[i1][j1][i2][j2];
+  assert(i1 + j1 == i2 + j2);
+  int& ans = dp[i1][j1][i2];
   if (ans != -1) return ans;
   int curr = g[i1][j1];
   if (i1 != i2 || j1 != j2) {
