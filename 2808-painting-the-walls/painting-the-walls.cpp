@@ -1,20 +1,24 @@
 class Solution {
 public:
-
     int paintWalls(vector<int>& cost, vector<int>& time) {
-        int n=cost.size();
-        int inf = 1e9+1;
-        vector<vector<int>>dp(n,vector<int>(n+1,-1));
-        function<int(int,int)> f=[&](int ind,int rem){
-            if(rem == 0) return 0;
-            if(ind == n) return inf;
-            if(dp[ind][rem] != -1) return dp[ind][rem];
-            int take,notake;
-            take=cost[ind]+f(ind+1,max(0,rem-time[ind]-1));
-            notake=f(ind+1,rem);
+        int n = cost.size();
 
-            return dp[ind][rem] = min(take,notake);
-        };
-        return f(0,n);
+        vector<vector<int>>dp(n+1,vector<int>(n+1,1e9+1));
+        // dp(i,rem) --> ith index tak rem bachane ke liye min cost
+
+        // base case
+        for(int i=0;i<=n;i++) dp[i][0]=0;
+        
+        for(int i=n-1;i>=0;i--){
+            for(int j=1;j<=n;j++){
+                int take,notake;
+                notake=dp[i+1][j];
+                take=cost[i]+dp[i+1][max(0,j-time[i]-1)];
+
+                dp[i][j]=min(take,notake);
+            }
+        }
+        return dp[0][n] ;
+
     }
 };
