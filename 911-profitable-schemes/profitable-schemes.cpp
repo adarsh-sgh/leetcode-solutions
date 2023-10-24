@@ -19,11 +19,36 @@ int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& pro
   mp = minProfit;
   grp = group;
   prof = profit;
+//   for (int i = 0;i < 102;i++)
+//     for (int j = 0;j < 102;j++)
+//       for (int k = 0;k < 102;k++)
+//         dp[i][j][k] = -1;
+//   return ps(0, 0, n);
+
+//tabulation
   for (int i = 0;i < 102;i++)
     for (int j = 0;j < 102;j++)
       for (int k = 0;k < 102;k++)
-        dp[i][j][k] = -1;
-  return ps(0, 0, n);
+        dp[i][j][k] = 0;
+
+  int gn = group.size();
+  dp[0][0][0] = 1;
+  for(int i = 1;i<= gn;i++){
+      dp[i][0][0] = 1;
+      int g = group[i-1],p = profit[i-1];
+      for(int j = 0;j<= n;j++){
+          for(int k = 0;k<= minProfit;k++){
+              //not take
+              dp[i][j][k] = dp[i-1][j][k];
+              //take
+              if(j-g >= 0)dp[i][j][k] += dp[i-1][j-g][max(k-p,0)];
+              dp[i][j][k] %= mod;
+          }
+      }
+  }
+  int ans = 0;
+  for(int m = 0;m<=n;m++){ans+= dp[gn][m][minProfit];ans %= mod;}
+  return ans;
 }
 
 };
