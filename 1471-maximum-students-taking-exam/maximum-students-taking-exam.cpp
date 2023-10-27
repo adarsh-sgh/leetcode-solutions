@@ -12,8 +12,8 @@ public:
         }
         return true;
     }
-    // int dp[1<<8][8] = {-1};
-    vector<vector<int>>dp;
+    int dp[1<<8][8] = {-1};
+    // vector<vector<int>>dp;
     int mst(int prev,int index){
         if(index == seats.size()) return 0;
         int curr = 0;
@@ -35,8 +35,8 @@ public:
     }
     int maxStudents(vector<vector<char>>& seats) {
         this->seats = seats;
-        // memset(dp,-1,size(dp));
-        dp.resize(1<<8,vector<int>(8,-1));
+        memset(dp,-1,sizeof(dp));
+        // dp.resize(1<<8,vector<int>(8,-1));
         return mst(0,0);
     }
 };
