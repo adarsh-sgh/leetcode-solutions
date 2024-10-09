@@ -1,15 +1,17 @@
 class Solution {
 public:
     int minAddToMakeValid(string s) {
-        int ans = 0,o = 0;
-        for(int i = 0;i<s.size();i++){
-            if(s[i]=='(')o++;
-            else o--;
-            if(o<0){
-                o = 0;
-                ans++;
-            }
+       int o = 0;
+       int ans = 0;
+       for(auto &c:s){
+        if(c=='('){
+            o++;
+        }else if(o == 0){
+            ans++;
+        }else{
+            o--;
         }
-        return ans + o;
+       } 
+       return ans + o;
     }
 };
