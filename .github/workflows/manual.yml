@@ -1,0 +1,13 @@
+name: Workflow
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send greeting
+      run: echo "Hello from new-b"
+
