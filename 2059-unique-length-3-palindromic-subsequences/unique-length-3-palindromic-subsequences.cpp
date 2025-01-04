@@ -28,7 +28,7 @@ public:
             }
         }
        }
-       for(auto &p:pals)cout<<p<<' ';
+    //    for(auto &p:pals)cout<<p<<' ';
        return pals.size();
     }
 };
