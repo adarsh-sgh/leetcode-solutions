@@ -1,58 +1,33 @@
 class Solution {
 public:
-// from course schedule 1
- bool canFinish(int n, vector<vector<int>>& prerequisites) {
-     // bi -> ai
-     // 0, 1, 2 tricolor dfs
-    vector<vector<int>>adj(n);
-    for(auto &e:prerequisites){
-        adj[e[1]].push_back(e[0]);
-    }
-    vector<int>vis(n);
-     function<int(int)>hasLoop = [&](int x)->int{
-        if(vis[x]==1) return true;
-        if(vis[x]==2) return false;
-        vis[x] = 1;
-        for(auto &a:adj[x]){
-            if(hasLoop(a)) return true;
-        }
-        vis[x] = 2;
-        return false;
-     };
-     for(int i = 0;i<n;i++){
-        if(hasLoop(i)) return false;
+// bfs approach
+    vector<int> findOrder(int nc, vector<vector<int>>& pr) {
+     vector<int>indegree(nc);
+     vector<vector<int>>adj(nc);
+     for(auto &x:pr){
+        indegree[x[0]]++;
+        adj[x[1]].push_back(x[0]);
      }
-     return true;
-    }
-
-    vector<int> findOrder(int n, vector<vector<int>>& prq) {
-       if(!canFinish(n,prq)) return {};
-       vector<vector<int>>adj(n);
-        for(auto &e:prq){
-            adj[e[1]].push_back(e[0]);
+     queue<int>q;
+     for(int i = 0;i < nc;i++){
+        if(indegree[i] == 0){
+            q.push(i);
         }
-        vector<int>indegree(n);
-        for(auto &e:prq)indegree[e[0]]++;
-        vector<int>ans;
-        queue<int>q;
-        for(int i = 0;i<n;i++){
-            if(indegree[i] == 0){
-                q.push(i);
-                ans.push_back(i);
+     }
+     vector<int>ans;
+     while(q.size()){
+        int t = q.front();
+        ans.push_back(t);
+        q.pop();
+        for(auto &a:adj[t]){
+            if(--indegree[a] == 0){
+                q.push(a);
             }
         }
-        while(q.size()){
-            auto f = q.front();
-            q.pop();
-            for(auto &a:adj[f]){
-                indegree[a]--;
-                if(indegree[a]==0){
-                    ans.push_back(a);
-                    q.push(a);
-                }
-            }
+     }
+     if(ans.size() != nc) return {};
+    return ans;
+    
 
-        }
-        return ans;
     }
 };
