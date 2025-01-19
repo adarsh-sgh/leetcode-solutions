@@ -1,20 +1,22 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-        int l = 0, r = height.size() - 1;
-        int maxl = 0, maxr = 0;
-        int trapped = 0;
-        while(l <= r){
-            if(height[l] < height[r]){
-                trapped += max(0, maxl - height[l]);
-                maxl = max(maxl,height[l]);
-                l++;
-            }else{
-                trapped += max(0, maxr - height[r]);
-                maxr = max(maxr,height[r]);
-                r--;
-            }
+       // hl -> highest bar on left, similarly hr
+       // trapped[i] = max(0, min(hl, hr) - hi)
+        int n = height.size();
+        vector<int>maxl(n);
+        vector<int>maxr(n);
+        for(int i = 1;i< n;i++){
+            maxl[i] = max(maxl[i-1], height[i-1]);
         }
-        return trapped;
+        for(int i = n-2;i>=0;i--){
+            maxr[i] = max(maxr[i+1], height[i+1]);
+        }
+        int ans = 0;
+        for(int i = 1;i<n-1;i++){
+            // cout<<ans<<' ';
+            ans += max(0, min(maxl[i], maxr[i]) - height[i]);
+        }
+        return ans;
     }
 };
