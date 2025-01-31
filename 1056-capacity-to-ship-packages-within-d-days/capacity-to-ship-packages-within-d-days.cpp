@@ -1,37 +1,61 @@
 class Solution {
 public:
-bool canCarry(int limit, vector<int> &weights, int trips) {
-    int currWeight = 0;
-    for(int i = 0; i < weights.size(); i++) {
-        if (weights[i] + currWeight <= limit) {
-            currWeight += weights[i];
-        } else {
-            trips--;
-            currWeight = weights[i];
-        }
+
+bool check(int val,vector<int>weights,int trips)
+{
+    int n=weights.size();
+    int count=0;
+    int sum=0;
+    for(int i=0;i<n;i++)
+    {
+       if(sum+weights[i]<=val)
+       {
+           sum+=weights[i];
+       }
+       else
+       {
+           count++;
+           sum=weights[i];
+       }
     }
-    return trips > 0;
+    return count<trips;
 }
 
-int minWeight(vector<int> &weights, int trips) {
-    int l = 0, h = 0, m, res;
-    for (auto &w : weights) {
-        l = max(w, l);
-        h += w;
-    }
-    while (l <= h) {
-        m = l + (h-l) / 2;
-        if (canCarry(m, weights, trips)) {
-            h = m - 1;
-            res = m;
-        } else {
-            l = m + 1;
+
+int binarySearch(int low,int high,vector<int>weights,int trips)
+{
+    while(low<high)
+    {
+        int mid=(low+high)/2;
+        bool b=check(mid,weights,trips);
+
+         //cout<<low<<" "<<mid<<" "<<high<<endl;
+
+        if(b)
+        {
+           high=mid;
+        }
+        else
+        {
+            low=mid+1;
         }
     }
-    return res;
+    return low;
+}
+
+int solve(vector<int>&weights, int trips){
+   int low=0;
+   int high=0;
+   for(auto it:weights)
+   {
+       if(it>low)
+       low=it;
+       high+=it;
+   }
+   return binarySearch(low,high,weights,trips);
 }
 
     int shipWithinDays(vector<int>& weights, int days) {
-        return minWeight(weights, days);
+        return solve(weights, days);
     }
 };
