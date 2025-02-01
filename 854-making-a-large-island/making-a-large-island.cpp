@@ -1,55 +1,51 @@
 class Solution {
 public:
-#define dbg(...) 42;
-    int ID = 2;
-map<int, int>sz;
-vector<vector<int>>g;
-bool oob(int x, int y) {
-  return x < 0 || y < 0 || x >= g.size() || y >= g[0].size();
-}
-vector<int> dir = { -1,0,1,0,-1 };
-
-int dfs(int x, int y, const int id) {
-  if (oob(x, y) || g[x][y] != 1)return 0;
-  g[x][y] = id;
-  int ans = 0;
-  for (int d = 0;d < 4;d++) {
-    ans += dfs(x + dir[d], y + dir[d + 1], id);
-  }
-  return ans + 1;
-}
-int largestIsland(vector<vector<int>>& grid) {
-  g = grid;
-  for (int i = 0;i < grid.size();i++) {
-    for (int j = 0;j < grid[0].size();j++) {
-      if (g[i][j] == 1) {
-        sz[ID] = dfs(i, j, ID);
-        ID++;
-      }
-    }
-  }
-  int ans = 0;
-  for (int i = 0;i < grid.size();i++) {
-    for (int j = 0;j < grid[0].size();j++) {
-      if (grid[i][j] == 0) {
-        map<int, int>mt;
-        for (int d = 0;d < 4;d++) {
-          int xn = i + dir[d], yn = j + dir[d + 1];
-          if (oob(xn, yn) || g[xn][yn] == 0)continue;
-          mt[g[xn][yn]] = sz[g[xn][yn]];
+    int largestIsland(vector<vector<int>>& grid) {
+        // give an id to each island
+        // store id, size for each island in a map
+        // for every 0 sum the size of all id's on it's 4 directions
+        vector<int>dir = {-1, 0 , 1 , 0, -1};
+        int ID = 2;
+        int n = grid.size(), m = grid[0].size();
+        map<int,int>mp;
+          auto oob = [&](int i, int j){
+            return i < 0 || j < 0 || i >= n || j >= m;
+        };
+        function<void(int,int)> dfs = [&](int i, int j)->void{
+            if(oob(i,j) || grid[i][j] != 1) return;
+            grid[i][j] = ID;
+            mp[ID]++;
+            for(int d = 0;d<4;d++){
+                dfs(i + dir[d], j + dir[d+1]);
+            }
+        };
+      
+        int ans = 0;
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j< m;j++){
+                if(grid[i][j] != 1) continue;
+                dfs(i,j);
+                ans = max(ans,mp[ID]);
+                ID++;
+            }
         }
-        int curr = 0;
-        for (auto&& [x, y] : mt){
-          curr+=y;
-          }
-          ans = max(ans,curr +1);
-      }
-      else {
-        ans = max(ans, sz[g[i][j]]);
-      }
+        for(int i = 0;i< n;i++){
+            for(int j = 0;j<m;j++){
+                if(grid[i][j] != 0)continue;
+                set<int>nbr;
+                for(int d = 0;d < 4;d++){
+                    int in = i + dir[d], jn = j + dir[d+1];
+                    if(oob(in,jn))continue;
+                    nbr.insert(grid[in][jn]);
+                }
+                int sum = 0;
+                for(auto &x:nbr){
+                    sum += mp[x];
+                }
+                ans = max(ans, 1 + sum);
+            }
+        }
+        return ans;
+
     }
-  }
-  dbg(g, sz);
-  return ans;
-}
 };
