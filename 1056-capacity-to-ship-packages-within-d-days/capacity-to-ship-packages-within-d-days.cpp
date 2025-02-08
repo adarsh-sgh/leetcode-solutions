@@ -1,61 +1,43 @@
 class Solution {
 public:
+    // ans min = 10, max = 55
+    // []
+    int d;
+    bool good(vector<int>&weights, int  weightLimit){
+       // arr [no, no , no ,no ..... no, yes, yes....yes] 
 
-bool check(int val,vector<int>weights,int trips)
-{
-    int n=weights.size();
-    int count=0;
-    int sum=0;
-    for(int i=0;i<n;i++)
-    {
-       if(sum+weights[i]<=val)
-       {
-           sum+=weights[i];
-       }
-       else
-       {
-           count++;
-           sum=weights[i];
-       }
-    }
-    return count<trips;
-}
-
-
-int binarySearch(int low,int high,vector<int>weights,int trips)
-{
-    while(low<high)
-    {
-        int mid=(low+high)/2;
-        bool b=check(mid,weights,trips);
-
-         //cout<<low<<" "<<mid<<" "<<high<<endl;
-
-        if(b)
-        {
-           high=mid;
+       // find index of first yes
+       // 10 -> no
+       // 11 -> no ....  
+       //   55  -> yes
+       int days = 1;
+       int curr = 0;
+       for(auto &w:weights){
+        if(curr + w > weightLimit){
+            days++;
+            curr = 0;
         }
-        else
-        {
-            low=mid+1;
-        }
+        curr += w; 
+       }
+       return days <= d;
     }
-    return low;
-}
-
-int solve(vector<int>&weights, int trips){
-   int low=0;
-   int high=0;
-   for(auto it:weights)
-   {
-       if(it>low)
-       low=it;
-       high+=it;
-   }
-   return binarySearch(low,high,weights,trips);
-}
 
     int shipWithinDays(vector<int>& weights, int days) {
-        return solve(weights, days);
+        d = days;
+        int l  = 0, r = 0;
+        for(auto &w:weights){
+            r += w;
+            l = max(w, l);
+        }
+
+        while(l < r){
+            int m = (l + r) / 2;
+            if(good(weights,m)){
+                r = m;
+            }else{
+                l = m + 1;
+            }
+        }
+        return l;
     }
 };
