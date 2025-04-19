@@ -8,9 +8,9 @@ public:
             // nums[i] + nums[j] >= lower => 
             // nums[j] >= lower - nums[i]
             // nuums[j] <= upper - nums[i];
-            auto it1 = lower_bound(nums.begin() + i + 1, nums.end(), lower - nums[i]);
-            auto it2 = upper_bound(nums.begin() + i + 1, nums.end(), upper - nums[i]);
-            ans += it2 - it1;
+            auto it1 = lower_bound(nums.begin() + i + 1, nums.end(), lower - nums[i])-nums.begin();
+            auto it2 = upper_bound(nums.begin() + i + 1, nums.end(), upper - nums[i])-nums.begin();
+            ans+= (it2-it1);
         }
         return ans;
     }
