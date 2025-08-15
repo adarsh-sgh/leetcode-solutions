@@ -1,12 +1,12 @@
 class Solution {
 public:
+// 1
+// 100
+// 1 00 00
     bool isPowerOfFour(int n) {
-       long long x = 1;
-       if(n == 1) return true;
-       while(x < n){
-        x *= 4;
-        if(x == n) return true;
-       }
-       return false; 
+        if(n< 1) return false;
+        int n1 = n - 1;
+        if(__builtin_popcount(n1) & 1) return false;
+        return __builtin_popcount(n) == 1;
     }
 };
