@@ -7,14 +7,13 @@ public:
        for(auto &x:s){
         if(x=='1'){
             ones++;
-        }else{
-            ans += ones * (ones + 1)/2;
+            ans += ones;
             ans %= mod;
+        }else{
+            // ans += ones * (ones + 1)/2;
             ones = 0;
         }
        }
-       ans += ones * (ones + 1)/2;
-       ans %= mod;
        return ans;
     }
 };
