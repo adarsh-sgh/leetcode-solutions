@@ -12,16 +12,14 @@ public:
        // m minutes run kar sakta hai
        // [true, true, true, false, false , false]
        long long l = 0, r = 1e14;
-       long long ans = -1;
-       while(l <= r){
-        long long m = (l + r) /2;
+       while(l < r){
+        long long m = (l + r + 1) /2;
         if(canRun(m, n, batteries)){
-            ans = m;
-            l = m + 1;
+            l = m;
         }else{
             r = m - 1;
         }
        }
-       return ans;
+       return l;
     }
 };
