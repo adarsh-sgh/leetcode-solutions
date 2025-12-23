@@ -1,9 +1,10 @@
 class Solution {
 public:
+// old submission
     int maxTwoEvents(vector<vector<int>>& events) {
        // sort by end and start times 
        vector<vector<int>>vc = events;
-       sort(events.begin(),events.end(), [&](auto a, auto b) {
+       sort(events.begin(),events.end(), [&](auto &a, auto &b) {
         return a[1] < b[1];
        });
        sort(vc.begin(),vc.end());
