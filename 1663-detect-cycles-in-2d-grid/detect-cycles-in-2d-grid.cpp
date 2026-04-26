@@ -1,32 +1,39 @@
 class Solution {
 public:
-  vector<vector<char>>grid;
-vector<int>dir{ -1,0,1,0,-1 };
-bool oob(int x, int y) {
-  return x < 0 || y < 0 || x >= grid.size() || y >= grid[0].size();
-}
-bool dfs(int x, int y, int px, int py) {
-  if (oob(x, y))return false;
-  if (px != -1 && grid[x][y] == grid[px][py])return true;
-  if(grid[x][y]<'a') return false;
-  grid[x][y] += 'A' - 'a';
-  for (int d = 0;d < 4;d++) {
-    int xn = x + dir[d], yn = y + dir[d + 1];
-    if(oob(xn,yn)||xn==px && yn==py)continue;
-    if(grid[xn][yn]!=grid[x][y] + 'a' - 'A' && grid[xn][yn] != grid[x][y])continue;
+    bool containsCycle(vector<vector<char>>& grid) {
+       // use dfs, if same color happens again it's a cycle
+       vector<int>dir = {-1,0,1,0,-1};
+       // '.' => visited
+       int n = grid.size(), m = grid[0].size();
+       bool ans = false;
 
-    if (dfs(xn, yn, x, y)) return true;
-  }
-  return false;
-}
-bool containsCycle(vector<vector<char>>& g) {
-  grid = g;
-  for (int i = 0;i < g.size();i++) {
-    for (int j = 0;j < g[0].size();j++) {
-      if (grid[i][j] <= 'Z')continue;
-      if (dfs(i, j, -1, -1) == true) return true;
+       auto oob = [&](int x,int y){
+        return x < 0 || y < 0 || x >= grid.size() || y >= grid[0].size();
+       };
+        // make the letters capital once visited
+       function<bool(int,int,int, int)>dfs = [&](int x, int y, int xp, int yp)-> bool{
+        if(oob(x,y))return false;
+        // if capital letter => visited
+        if(grid[x][y]  <  'a') return false;
+        grid[x][y] += 'A' - 'a';
+        bool res = false;
+        for(int d = 0; d < 4;d++){
+            int xn = x + dir[d], yn = y + dir[d+1];
+            if(xn == xp && yn == yp)continue;
+            if(oob(xn,yn))continue;
+            if(grid[xn][yn] == grid[x][y]) return true;
+            if(grid[xn][yn] + 'A' - 'a' != grid[x][y]) continue;
+            res = res || dfs(xn, yn, x, y);
+        }
+        return res;
+       };
+       for(int i = 0;i < n;i++){
+        for(int j = 0;j < m;j++){
+            if(dfs(i,j,-1,-1)){
+                return true;
+            }
+        }
+       }
+       return false;
     }
-  }
-  return false;
-}
 };
