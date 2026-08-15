@@ -6,14 +6,15 @@ public:
        // hence return n - 1
        // if all elements are zero return 0;
        int xr = 0;
-       int nz = 0;
-       for(auto &x:nums){
+       bool nz = 0;
+       int n = nums.size();
+       for(auto &&x:nums){
         xr ^= x;
-        if(x != 0) nz = 1;
+        nz |= x;
        }
-       
-       if(xr) return nums.size();
-       if(nz) return nums.size() - 1;
+
+       if(xr) return n;
+       return nz * (n - 1);
        return 0;
     }
 };
