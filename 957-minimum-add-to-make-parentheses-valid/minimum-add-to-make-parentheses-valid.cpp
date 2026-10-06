@@ -1,17 +1,24 @@
 class Solution {
 public:
     int minAddToMakeValid(string s) {
-       int o = 0;
        int ans = 0;
-       for(auto &c:s){
-        if(c=='('){
-            o++;
-        }else if(o == 0){
-            ans++;
+       int oms = 0;
+       for(auto &c:s) {
+        if(c == '('){
+            oms++;
         }else{
-            o--;
+            if(oms){
+                oms--;
+            }else{
+                ans++;
+            }
         }
-       } 
-       return ans + o;
+       }
+       ans += oms;
+       return ans;
     }
 };
+
+
+// if oms < 0 make it zero ans++
+// in the end add oms to ans
